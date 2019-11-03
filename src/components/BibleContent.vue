@@ -6,10 +6,10 @@
 
         <v-row no-gutters>
           <v-col class="px-3" cols="12" sm="12" md="6">
-            <v-autocomplete v-model="selectedTranslation" :items="translations" :filter="filterAutocomplete" @change="translationChanged" label="Wybierz tłumaczenie" outlined></v-autocomplete>
+            <v-autocomplete v-model="selectedTranslation" :items="translations" :filter="filterAutocomplete" label="Wybierz tłumaczenie" outlined></v-autocomplete>
           </v-col>
           <v-col class="px-3" cols="12" sm="12" md="6">
-            <v-autocomplete v-model="selectedBook" :items="books" :filter="filterAutocomplete" @change="bookChanged" label="Wybierz księgę" outlined></v-autocomplete>
+            <v-autocomplete v-model="selectedBook" :items="books" :filter="filterAutocomplete" label="Wybierz księgę" outlined></v-autocomplete>
           </v-col>
         </v-row>
 
@@ -72,9 +72,9 @@
 </template>
 
 <script>
-import bm from '@/bible_metadata'
+import BibleData from '@/bible-data';
+import EventBus from '@/event-bus';
 import {windowSelectionObjectToSelectionInfo, forceSelectCurrentSelection} from '@/selection_helpers'
-import {getBookVerses} from '@/fetchers/biblia_info_fetcher'
 import goTo from 'vuetify/es5/services/goto'
 
 // // TODO:
@@ -122,43 +122,19 @@ import goTo from 'vuetify/es5/services/goto'
 export default {
   data() {
     return {
-      translations: Object.keys(bm.translations).map(function (key, index) {
-        var value = bm.translations[key];
-        if(value == 'header') {
-          return {
-            header: key
-          }
-        }
-        else {
-          return {
-            text: key,
-            value: value
-          }
-        }
-      }),
-      books: Object.keys(bm.books).map(function (key, index) {
-        var value = bm.books[key];
-        if(value == 'header') {
-          return {
-            header: key
-          }
-        }
-        else {
-          return {
-            text: value.name,
-            value: key
-          }
-        }
+      translations: Object.keys(BibleData.translations).map(function (translationLongNameOrHeaderName, index) {
+        var translationShortNameOrHeader = BibleData.translations[translationLongNameOrHeaderName];
+        if(translationShortNameOrHeader == 'header') { return { header: translationLongNameOrHeaderName } }
+        else { return { text: translationLongNameOrHeaderName, value: translationShortNameOrHeader } }
       }),
       selectedTranslation: 'bt',
-      selectedBook: 'Mt',
+      selectedBook: 'Mk',
       moreOptions: false,
       moreOptionsIcon: "mdi-chevron-down",
       moreOptionsText: "Pokaż wiecej opcji",
       showVerseNumbers: true,
       verseNumberSelectable: false,
       previousBibliaInfoRequests: [],
-      verses: {},
       currentSelection: null,
     }
   },
@@ -185,23 +161,6 @@ export default {
     },
     filterAutocomplete(item, queryText, itemText) {
       return itemText.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) > -1;
-    },
-    fetchBible() {
-      for(var i = 0; i<this.previousBibliaInfoRequests.length; i++) {
-        this.previousBibliaInfoRequests[i].abort();
-      }
-      this.previousBibliaInfoRequests = [];
-      this.verses = {};
-      let thisBibleContent = this;
-      getBookVerses(this.$http, this.selectedTranslation, this.selectedBook, bm.books[this.selectedBook].chapters, this.previousBibliaInfoRequests, function(chapterVersesArray, chapterIndex) {
-        thisBibleContent.$set(thisBibleContent.verses, chapterIndex, chapterVersesArray)
-      });
-    },
-    bookChanged() {
-      this.fetchBible();
-    },
-    translationChanged() {
-      this.fetchBible();
     },
     selectChapter(indexChapter) {
       // TODO pospulo sie!!!
@@ -237,6 +196,21 @@ export default {
     },
   },
   computed: {
+    books() {         // list of books' names and short names for particular translation, contains also headers for autocomplete component
+      let selectedTranslation = this.selectedTranslation;
+      return Object.keys(BibleData.booksNames).filter(function (bookShortNameOrHeaderName, index) {
+        var bookNameOrHeader = BibleData.booksNames[bookShortNameOrHeaderName];
+        return (bookNameOrHeader == 'header' || bookShortNameOrHeaderName in BibleData.allBibleData[selectedTranslation]);
+      })
+      .map(function (bookShortNameOrHeaderName, index) {
+        var bookNameOrHeader = BibleData.booksNames[bookShortNameOrHeaderName];
+        if(bookNameOrHeader == 'header') { return { header: bookShortNameOrHeaderName } }
+        else { return { text: bookNameOrHeader, value: bookShortNameOrHeaderName } }
+      });
+    },
+    verses() {
+      return BibleData.allBibleData[this.selectedTranslation][this.selectedBook];
+    },
     verseNumberClasses() {
       return {
         'unselectable': !this.verseNumberSelectable
@@ -250,9 +224,6 @@ export default {
       }
       return ret;
     }
-  },
-  created() {
-    this.fetchBible();
   }
 }
 </script>

@@ -1,7 +1,6 @@
 // TODO niektore nie musza byc export!
 
 function getSelectionNodeInfo(node) {
-
   if(node.classList.contains("verse-text") || node.classList.contains("verse-number")) {
     var chapterNumber = parseInt(node.getAttribute("chapter"));
     var verseNumber = parseInt(node.getAttribute("verse"));
