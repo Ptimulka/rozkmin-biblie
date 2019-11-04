@@ -17,7 +17,7 @@
           Skroluj do rozdziału:
         </h3>
 
-        <v-btn fab outlined v-for="i in 10" class="ma-1" color="primary" @click="scrollToChapter(i-1)" >{{ i }}</v-btn>
+        <v-btn fab outlined v-for="chapterNumber in verses.length" class="ma-1" color="primary" @click="scrollToChapter(chapterNumber)" >{{ chapterNumber }}</v-btn>
 
         <v-col>
           <v-btn block text color="primary" @click="toggleMoreOptions">
@@ -139,8 +139,8 @@ export default {
     }
   },
   methods: {
-    scrollToChapter(indexChapter) {
-      var id = "chapter" + (indexChapter+1);
+    scrollToChapter(chapterNumber) {
+      var id = "chapter" + chapterNumber;
       var el = this.$refs[id][0];
       goTo(el, { offset: 56 });   // workaround, when toolbar is active scroll goes too far
     },
