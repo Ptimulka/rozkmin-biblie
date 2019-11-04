@@ -1,5 +1,10 @@
 import bt from '@/bible/bt';
 import bp from '@/bible/bp';
+import bw from '@/bible/bw';
+import br from '@/bible/br';
+import bg from '@/bible/bg';
+import ng from '@/bible/ng';
+import ug from '@/bible/ug';
 
 var BibleData = {
   translations: {
@@ -27,7 +32,12 @@ var BibleData = {
   },
   allBibleData: {
     'bt': bt,
-    'bp': bp
+    'bp': bp,
+    'bw': bw,
+    'br': br,
+    'bg': bg,
+    'ng': ng,
+    'ug': ug
   },
   booksNames: {
     'Stary Testament' : 'header',
