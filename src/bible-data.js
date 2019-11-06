@@ -5,6 +5,7 @@ import br from '@/bible/br';
 import bg from '@/bible/bg';
 import ng from '@/bible/ng';
 import ug from '@/bible/ug';
+import esp from '@/bible/esp';
 
 var BibleData = {
   translations: {
@@ -31,13 +32,26 @@ var BibleData = {
     'Łacińska Vulgata'              : 'vul',
   },
   allBibleData: {
+    // 'translation': dictionary of chapters and arrays of arrays of verses, for example
+    //  {
+    //     'Mt': [
+    //       [ 'First verse of first chapter of Mt', 'Second verse of first chapter of Mt', ... ],
+    //       [ 'First verse of second chapter of Mt', 'Second verse of second chapter of Mt', ... ]
+    //       ...
+    //     ],
+    //     'Lk': [
+    //        [ ... ],
+    //        ...
+    //     ]
+    //  }
     'bt': bt,
     'bp': bp,
     'bw': bw,
     'br': br,
     'bg': bg,
     'ng': ng,
-    'ug': ug
+    'ug': ug,
+    'esp': esp
   },
   booksNames: {
     'Stary Testament' : 'header',
@@ -60,7 +74,7 @@ var BibleData = {
     'Tb'    : 'Księga Tobiasza',
     'Jdt'   : 'Księga Judyty',
     'Est'   : 'Księga Estery',
-    '1Mch ' : '1 Księga Machabejska',
+    '1Mch'  : '1 Księga Machabejska',
     '2Mch'  : '2 Księga Machabejska',
     'Job'   : 'Księga Hioba',
     'Ps'    : 'Księga Psalmów',
