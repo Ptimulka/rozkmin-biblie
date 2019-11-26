@@ -6,6 +6,7 @@ import bg from '@/bible/bg';
 import ng from '@/bible/ng';
 import ug from '@/bible/ug';
 import esp from '@/bible/esp';
+import ns from '@/bible/ns';
 
 var BibleData = {
   translations: {
@@ -51,7 +52,8 @@ var BibleData = {
     'bg': bg,
     'ng': ng,
     'ug': ug,
-    'esp': esp
+    'esp': esp,
+    'ns': ns
   },
   booksNames: {
     'Stary Testament' : 'header',
