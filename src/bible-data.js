@@ -10,6 +10,7 @@ import ns from '@/bible/ns';
 import jw from '@/bible/jw';
 import sz from '@/bible/sz';
 import eib from '@/bible/eib';
+import av from '@/bible/av';
 
 var BibleData = {
   translations: {
@@ -59,7 +60,8 @@ var BibleData = {
     'ns': ns,
     'jw': jw,
     'sz': sz,
-    'eib': eib
+    'eib': eib,
+    'av': av
   },
   booksNames: {
     'Stary Testament' : 'header',
