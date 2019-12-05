@@ -11,6 +11,7 @@ import jw from '@/bible/jw';
 import sz from '@/bible/sz';
 import eib from '@/bible/eib';
 import av from '@/bible/av';
+import web from '@/bible/web';
 
 var BibleData = {
   translations: {
@@ -61,7 +62,8 @@ var BibleData = {
     'jw': jw,
     'sz': sz,
     'eib': eib,
-    'av': av
+    'av': av,
+    'web': web
   },
   booksNames: {
     'Stary Testament' : 'header',
