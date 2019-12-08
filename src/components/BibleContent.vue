@@ -16,8 +16,7 @@
         <h3 class="subtitle-1 primary--text text-center mb-2 unselectable">
           Skroluj do rozdziału:
         </h3>
-
-        <v-btn fab outlined v-for="chapterNumber in verses.length" class="ma-1" color="primary" @click="scrollToChapter(chapterNumber)" >{{ chapterNumber }}</v-btn>
+        <ScrollToButtons :translation="selectedTranslation" :book="selectedBook"></ScrollToButtons>
 
         <v-col>
           <v-btn block text color="primary" @click="toggleMoreOptions">
@@ -75,6 +74,7 @@
 </template>
 
 <script>
+import ScrollToButtons from '@/components/ScrollToButtons'
 import BibleData from '@/bible/bible-data';
 import {getTranslations, getBooks} from '@/bible/bible-provider'
 import EventBus from '@/event-bus';
@@ -124,6 +124,7 @@ import goTo from 'vuetify/es5/services/goto'
 // https://www.biblia.info.pl/blog/biblia-on-line/
 
 export default {
+  components: { ScrollToButtons },
   data() {
     return {
       translations: getTranslations(),
