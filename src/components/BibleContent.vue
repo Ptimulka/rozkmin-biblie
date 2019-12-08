@@ -50,6 +50,9 @@
           {{ makeChapterName(parseInt(indexChapter)) }}
         </h2>
         <template v-for="(verse, indexVerse) in versesArrays">
+          <h3 v-if="typeof headings != 'undefined' && headings[indexChapter].some(heading => heading.after == indexVerse)" class="primary--text text-center my-2 unselectable">
+            {{ headings[indexChapter].find(heading => heading.after == indexVerse).title }}
+          </h3>
           <span :chapter="(parseInt(indexChapter) + 1)" :verse="(indexVerse + 1)" v-show="showVerseNumbers" class="primary--text verse-number" :class="verseNumberClasses">({{ indexVerse+1 }})</span>
           <span :chapter="(parseInt(indexChapter) + 1)" :verse="(indexVerse + 1)" class="verse-text"> {{ verse }} </span>
         </template>
@@ -72,7 +75,8 @@
 </template>
 
 <script>
-import BibleData from '@/bible-data';
+import BibleData from '@/bible/bible-data';
+import {getTranslations, getBooks} from '@/bible/bible-provider'
 import EventBus from '@/event-bus';
 import {windowSelectionObjectToSelectionInfo, forceSelectCurrentSelection} from '@/selection_helpers'
 import goTo from 'vuetify/es5/services/goto'
@@ -122,11 +126,7 @@ import goTo from 'vuetify/es5/services/goto'
 export default {
   data() {
     return {
-      translations: Object.keys(BibleData.translations).map(function (translationLongNameOrHeaderName, index) {
-        var translationShortNameOrHeader = BibleData.translations[translationLongNameOrHeaderName];
-        if(translationShortNameOrHeader == 'header') { return { header: translationLongNameOrHeaderName } }
-        else { return { text: translationLongNameOrHeaderName, value: translationShortNameOrHeader } }
-      }),
+      translations: getTranslations(),
       selectedTranslation: 'bt',
       selectedBook: 'Mk',
       moreOptions: false,
@@ -196,17 +196,8 @@ export default {
     },
   },
   computed: {
-    books() {         // list of books' names and short names for particular translation, contains also headers for autocomplete component
-      let selectedTranslation = this.selectedTranslation;
-      return Object.keys(BibleData.booksNames).filter(function (bookShortNameOrHeaderName, index) {
-        var bookNameOrHeader = BibleData.booksNames[bookShortNameOrHeaderName];
-        return (bookNameOrHeader == 'header' || bookShortNameOrHeaderName in BibleData.allBibleData[selectedTranslation]);
-      })
-      .map(function (bookShortNameOrHeaderName, index) {
-        var bookNameOrHeader = BibleData.booksNames[bookShortNameOrHeaderName];
-        if(bookNameOrHeader == 'header') { return { header: bookShortNameOrHeaderName } }
-        else { return { text: bookNameOrHeader, value: bookShortNameOrHeaderName } }
-      });
+    books() {
+      return getBooks(this.selectedTranslation);
     },
     verses() {
       return BibleData.allBibleData[this.selectedTranslation][this.selectedBook];
@@ -223,6 +214,9 @@ export default {
         ret.push(this.verses[i].length);
       }
       return ret;
+    },
+    headings() {
+      return BibleData.headings[this.selectedBook];
     }
   }
 }
@@ -236,13 +230,6 @@ export default {
    -webkit-user-select: none;
    -ms-user-select: none;
    user-select: none;
-}
-
-.force-select-all {
-  -webkit-user-select: all;
-  -moz-user-select: all;
-  -ms-user-select: all;
-  user-select: all;
 }
 
 ::selection {
