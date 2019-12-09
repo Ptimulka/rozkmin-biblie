@@ -16,7 +16,7 @@
         <h3 class="subtitle-1 primary--text text-center mb-2 unselectable">
           Skroluj do rozdziału:
         </h3>
-        <ScrollToButtons :translation="selectedTranslation" :book="selectedBook"></ScrollToButtons>
+        <ScrollToButtons :translation="selectedTranslation" :book="selectedBook" @chapterClicked="scrollToChapter" @headingClicked="scrollToHeading"></ScrollToButtons>
 
         <v-col>
           <v-btn block text color="primary" @click="toggleMoreOptions">
@@ -41,15 +41,14 @@
       </v-card-text>
     </v-card>
 
-    <v-card v-for="(versesArrays, indexChapter) in verses" class="mb-2" :id="`chapter`+(parseInt(indexChapter)+1)" :ref="'chapter'+(parseInt(indexChapter)+1)">
-
+    <v-card v-for="(versesArrays, indexChapter) in verses" class="mb-2" :key="indexChapter">
       <!-- Bible text -->
       <v-card-text class="text-justify" @mouseup="onBibleSelected()">
-        <h2 class="primary--text text-center mb-2 unselectable">
+        <h2 class="primary--text text-center mb-2 unselectable" :ref="makeChapterId(indexChapter+1)">
           {{ makeChapterName(parseInt(indexChapter)) }}
         </h2>
         <template v-for="(verse, indexVerse) in versesArrays">
-          <h3 v-if="typeof headings != 'undefined' && headings[indexChapter].some(heading => heading.after == indexVerse)" class="primary--text text-center my-2 unselectable">
+          <h3 v-if="typeof headings != 'undefined' && headings[indexChapter].some(heading => heading.after == indexVerse)" class="primary--text text-center my-2 unselectable" :ref="makeHeadingId(indexChapter+1,indexVerse)">
             {{ headings[indexChapter].find(heading => heading.after == indexVerse).title }}
           </h3>
           <span :chapter="(parseInt(indexChapter) + 1)" :verse="(indexVerse + 1)" v-show="showVerseNumbers" class="primary--text verse-number" :class="verseNumberClasses">({{ indexVerse+1 }})</span>
@@ -141,7 +140,12 @@ export default {
   },
   methods: {
     scrollToChapter(chapterNumber) {
-      var id = "chapter" + chapterNumber;
+      var id = this.makeChapterId(chapterNumber);
+      var el = this.$refs[id][0];
+      goTo(el, { offset: 56 });   // workaround, when toolbar is active scroll goes too far
+    },
+    scrollToHeading(chapterNumber, after) {
+      var id = this.makeHeadingId(chapterNumber, after);
       var el = this.$refs[id][0];
       goTo(el, { offset: 56 });   // workaround, when toolbar is active scroll goes too far
     },
@@ -156,6 +160,12 @@ export default {
         this.moreOptionsIcon = "mdi-chevron-up";
         this.moreOptionsText = "Ukryj wiecej opcji";
       }
+    },
+    makeChapterId(chapterNumber) {
+      return "chapter"+chapterNumber;
+    },
+    makeHeadingId(chapterNumber, after) {
+      return "heading"+chapterNumber+"."+after;
     },
     makeChapterName(indexChapter) {
       return "Rozdział " + (indexChapter+1);
