@@ -80,48 +80,6 @@ import EventBus from '@/event-bus';
 import {windowSelectionObjectToSelectionInfo, forceSelectCurrentSelection} from '@/selection_helpers'
 import goTo from 'vuetify/es5/services/goto'
 
-// // TODO:
-// poprawic na komorce ta druga kolumna zeby nie miala marginesu ani scrollbara!
-//
-//
-// w safari niezaznaczalne pola edycji
-// trzymanie zaznaczenia caly czas!
-// wyswietlanie co zaznaczono w rozkminach (event bus...)
-// link odpowiadajacy zaznaczeniu!
-// ogarniecie by nic innego nie moglo byc zaznaczone? - tlumaczenie i ksiega!
-//
-// oprocz skroluj do rozdzialu tez skroluj do fragmentu?
-// i wtedy jakis przycisk taki jak pokaz wiecej opcji "Pokaż opcje skrolowania"
-//
-// CALY PANEL DOLNY! przyciski: kopiuj do schowka, szukaj w google, do groy, w dol, skroluj do zaznaczenia, usun zaznaczenie, poprz zaznaczenie, nastepne zaznaczenie
-// moze na niskich ekranach powinien byc wysuwany?
-//
-// panel u gory z karusela poprzednich zaznaczen
-//
-// ladowanie prawdziwej biblii
-// nadpisac ctrl A
-//
-// przyciisk zaznacz cala ksege
-//
-// dalekie plany
-// dodawanie rozkminy:
-//   - moja wlasna rozkmina
-//   - rozkmina w filmiku
-//   - rozkmina w filmie
-//   - rozkmina w ksiazce
-//   - rozkmina w artykule w internecie
-//   - rozkmina w artykule w gazecie ?
-// filmy z filmwebu
-// ksiazki ze strony z ksiazkami
-//
-// poziom rozkminy : gruba rozkmina,  normalna rozkmina, wspomnienie, moja interpretacja
-
-// ksiazki: http://lubimyczytac.pl/searcher/getsuggestions?phrase=tolkien
-
-
-// https://www.biblia.info.pl/cgi-bin/biblia.cgi?j5.1-999/tbp
-// https://www.biblia.info.pl/blog/biblia-on-line/
-
 export default {
   components: { ScrollToButtons },
   data() {
@@ -174,37 +132,37 @@ export default {
       return itemText.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) > -1;
     },
     selectChapter(indexChapter) {
-      // TODO pospulo sie!!!
       var newCurrentSelection = {
-        start: {
-          chapter: indexChapter + 1,
-          verse: 1,
-        },
-        end: {
-          chapter: indexChapter + 1,
-          verse: this.chaptersLengths[indexChapter],
-        }
+        start: { chapter: indexChapter + 1, verse: 1 },
+        end:   { chapter: indexChapter + 1, verse: this.chaptersLengths[indexChapter] }
       };
-      this.currentSelection = newCurrentSelection;
-      forceSelectCurrentSelection(this.currentSelection);
+      this.newSelection(newCurrentSelection);
     },
     handleSelectedText() {
     // https://stackoverflow.com/questions/5669448/get-selected-texts-html-in-div
       if (window.getSelection) {
         console.log("tu");
         var selectionInfo = windowSelectionObjectToSelectionInfo(window.getSelection());
-        if(selectionInfo !== null) {
-          this.currentSelection = selectionInfo;
-          forceSelectCurrentSelection(this.currentSelection);
-        }
+        this.newSelection(selectionInfo);
       } else if (document.selection) {
         console.log("tu2");
         console.log(document.selection);
       }
     },
+    newSelection(selection) {
+      this.currentSelection = selection;
+      if(selection != null)
+        forceSelectCurrentSelection(this.currentSelection);
+      this.emitSelectionChanged(this.currentSelection);
+    },
     onBibleSelected() {
       this.handleSelectedText();
     },
+    emitSelectionChanged(selection) {
+      if(selection != null)
+        selection.book = this.selectedBook;
+      EventBus.$emit('SELECTION_CHANGED', selection);
+    }
   },
   computed: {
     books() {
@@ -219,12 +177,7 @@ export default {
       }
     },
     chaptersLengths() {
-      var ret = [];
-      // TODO moze inne liczby skoro slownik?
-      for(var i = 0; i < this.verses.length; i++) {
-        ret.push(this.verses[i].length);
-      }
-      return ret;
+      return this.verses.map(chapterVerses => chapterVerses.length );
     },
     headings() {
       return BibleData.headings[this.selectedBook];

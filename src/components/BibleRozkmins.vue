@@ -6,6 +6,9 @@
       <div>
         <v-card-text align="center" justify="center">
           <div>
+            <h2 v-if="selection != null">
+              Zaznaczony fragment: {{ selectionToText(selection) }}
+            </h2>
             <span>Message</span>
             <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</span>
             <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</span>
@@ -27,15 +30,26 @@
 </template>
 
 <script>
+import EventBus from '@/event-bus';
+
 export default {
   data() {
     return {
-      scrollPosition: null
+      scrollPosition: null,
+      selection: null
     }
   },
   methods: {
     updateScroll() {
       this.scrollPosition = window.scrollY
+    },
+    selectionToText(selection) {
+      var startChapter = selection.start.chapter;
+      var startVerse = selection.start.verse;
+      var endChapter = selection.end.chapter;
+      var endVerse = selection.end.verse;
+
+      return selection.book + " " + startChapter + "," + startVerse + " - " + endChapter + "," + endVerse;
     }
   },
   computed: {
@@ -51,6 +65,10 @@ export default {
   },
   mounted() {
     window.addEventListener('scroll', this.updateScroll);
+    var thisBibleRozkmins = this;
+    EventBus.$on('SELECTION_CHANGED', function(payLoad) {
+      thisBibleRozkmins.selection = payLoad;
+    });
   }
 }
 </script>

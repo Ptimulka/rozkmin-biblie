@@ -1,7 +1,7 @@
 <template>
   <div>
     <template v-for="chapterNumber in numberOfChapters">
-      <v-btn fab x-small outlined class="ma-1" color="primary" @click="chapterClicked(chapterNumber)" :key="chapterNumber">
+      <v-btn x-small outlined class="ma-1" color="primary" @click="chapterClicked(chapterNumber)" :key="chapterNumber">
         {{ chapterNumber }}
       </v-btn>
       <v-btn x-small outlined v-for="heading in headings[chapterNumber-1]" class="ma-1" color="primary" @click="headingClicked(chapterNumber, heading.after)" :key="chapterNumber*100+heading.after">

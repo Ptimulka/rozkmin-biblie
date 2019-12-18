@@ -75,9 +75,7 @@ export function forceSelectCurrentSelection(currentSelection) {
   var startVerse = currentSelection.start.verse;
   var endChapter = currentSelection.end.chapter;
   var endVerse = currentSelection.end.verse;
-
-  console.log(startChapter + "," + startVerse + " - " + endChapter + "," + endVerse);
-
+  
   var selection = window.getSelection();
   selection.removeAllRanges();
   var range = document.createRange();
