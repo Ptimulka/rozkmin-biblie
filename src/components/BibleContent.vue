@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <v-card class="mb-2">
       <v-card-text class="pb-0" align="center" justify="center">
 
@@ -44,11 +43,11 @@
     <v-card v-for="(versesArrays, indexChapter) in verses" class="mb-2" :key="indexChapter">
       <!-- Bible text -->
       <v-card-text class="text-justify" @mouseup="onBibleSelected()">
-        <h2 class="primary--text text-center mb-2 unselectable" :ref="makeChapterId(indexChapter+1)">
+        <h2 class="primary--text text-center mb-2 unselectable" :id="makeChapterId(indexChapter+1)">
           {{ makeChapterName(parseInt(indexChapter)) }}
         </h2>
         <template v-for="(verse, indexVerse) in versesArrays">
-          <h3 v-if="typeof headings != 'undefined' && headings[indexChapter].some(heading => heading.after == indexVerse)" class="primary--text text-center my-2 unselectable" :ref="makeHeadingId(indexChapter+1,indexVerse)">
+          <h3 v-if="typeof headings != 'undefined' && headings[indexChapter].some(heading => heading.after == indexVerse)" class="primary--text text-center my-2 unselectable" :id="makeHeadingId(indexChapter+1,indexVerse)">
             {{ headings[indexChapter].find(heading => heading.after == indexVerse).title }}
           </h3>
           <span :chapter="(parseInt(indexChapter) + 1)" :verse="(indexVerse + 1)" v-show="showVerseNumbers" class="primary--text verse-number" :class="verseNumberClasses">({{ indexVerse+1 }})</span>
@@ -98,14 +97,14 @@ export default {
   },
   methods: {
     scrollToChapter(chapterNumber) {
+      location.hash = null;
       var id = this.makeChapterId(chapterNumber);
-      var el = this.$refs[id][0];
-      goTo(el, { offset: 56 });   // workaround, when toolbar is active scroll goes too far
+      location.hash = id;
     },
     scrollToHeading(chapterNumber, after) {
+      location.hash = null;
       var id = this.makeHeadingId(chapterNumber, after);
-      var el = this.$refs[id][0];
-      goTo(el, { offset: 56 });   // workaround, when toolbar is active scroll goes too far
+      location.hash = id;
     },
     toggleMoreOptions() {
       if(this.moreOptions) {

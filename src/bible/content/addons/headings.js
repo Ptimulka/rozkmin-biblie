@@ -404,7 +404,7 @@ var headings = {
       { title: "Ofiara ubogich", after: 20 },
       { title: "Trąd na domach", after: 32 },
       { title: "Oczyszczenie domu", after: 48 },
-      { title: "Zakończenie", after: 32 }
+      { title: "Zakończenie", after: 53 }
     ],
     [
       { title: "Wycieki u mężczyzn", after: 0 },
@@ -509,7 +509,7 @@ var headings = {
       { title: "Wykup pierworodnych bydła", after: 25 },
       { title: "Poświęcenie przez \"cherem\"", after: 27 },
       { title: "Wykup dziesięciny", after: 29 }
-    ],
+    ]
   ]
 }
 
