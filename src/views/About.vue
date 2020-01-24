@@ -2,9 +2,9 @@
   <div>
     <Navbar></Navbar>
     <v-content>
-      <div class="about">
-        <h1>This is an about page</h1>
-      </div>
+      <v-col class="text-center" cols="12">
+        <h1 class="mb-2 display-1 text-center">Strona w budowie</h1>
+      </v-col>
     </v-content>
     </div>
 </template>

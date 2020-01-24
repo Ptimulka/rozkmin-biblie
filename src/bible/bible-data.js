@@ -35,10 +35,10 @@ var BibleData = {
     'King James Version'            : 'av',
     'Webster Bible'                 : 'web',
     'Young\'s Literal Translation'  : 'ylt',
-    'Biblia Grecka' : 'header',
-    'Septuaginta'                   : 'gr',
-    'Biblia po łacinie' : 'header',
-    'Łacińska Vulgata'              : 'vul',
+    // 'Biblia Grecka' : 'header',
+    // 'Septuaginta'                   : 'gr',
+    // 'Biblia po łacinie' : 'header',
+    // 'Łacińska Vulgata'              : 'vul',
   },
   allBibleData: {
     // 'translation': dictionary of chapters and arrays of arrays of verses, for example
