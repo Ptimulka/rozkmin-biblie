@@ -77,7 +77,6 @@ import BibleData from '@/bible/bible-data';
 import {getTranslations, getBooks} from '@/bible/bible-provider'
 import EventBus from '@/event-bus';
 import {windowSelectionObjectToSelectionInfo, forceSelectCurrentSelection} from '@/selection_helpers'
-import goTo from 'vuetify/es5/services/goto'
 
 export default {
   components: { ScrollToButtons },
@@ -140,12 +139,10 @@ export default {
     handleSelectedText() {
     // https://stackoverflow.com/questions/5669448/get-selected-texts-html-in-div
       if (window.getSelection) {
-        console.log("tu");
         var selectionInfo = windowSelectionObjectToSelectionInfo(window.getSelection());
         this.newSelection(selectionInfo);
       } else if (document.selection) {
-        console.log("tu2");
-        console.log(document.selection);
+        // TODO investigate, other browsers?
       }
     },
     newSelection(selection) {
