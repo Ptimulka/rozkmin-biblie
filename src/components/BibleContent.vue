@@ -47,11 +47,11 @@
           {{ makeChapterName(parseInt(indexChapter)) }}
         </h2>
         <template v-for="(verse, indexVerse) in versesArrays">
-          <h3 v-if="typeof headings != 'undefined' && headings[indexChapter].some(heading => heading.after == indexVerse)" class="primary--text text-center my-2 unselectable" :id="makeHeadingId(indexChapter+1,indexVerse)">
+          <h3 v-if="typeof headings != 'undefined' && headings[indexChapter].some(heading => heading.after == indexVerse)" class="primary--text text-center my-2 unselectable" :id="makeHeadingId(indexChapter+1,indexVerse)" :key="makeHeadingId(indexChapter+1,indexVerse)">
             {{ headings[indexChapter].find(heading => heading.after == indexVerse).title }}
           </h3>
-          <span :chapter="(parseInt(indexChapter) + 1)" :verse="(indexVerse + 1)" v-show="showVerseNumbers" class="primary--text verse-number" :class="verseNumberClasses">({{ indexVerse+1 }})</span>
-          <span :chapter="(parseInt(indexChapter) + 1)" :verse="(indexVerse + 1)" class="verse-text"> {{ verse }} </span>
+          <span :chapter="(parseInt(indexChapter) + 1)" :verse="(indexVerse + 1)" v-show="showVerseNumbers" class="primary--text verse-number" :class="verseNumberClasses" :key="'versenumber'+indexChapter+'.'+indexVerse">({{ indexVerse+1 }})</span>
+          <span :chapter="(parseInt(indexChapter) + 1)" :verse="(indexVerse + 1)" class="verse-text" :key="'verse'+indexChapter+'.'+indexVerse"> {{ verse }} </span>
         </template>
       </v-card-text>
 

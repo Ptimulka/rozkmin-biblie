@@ -1,8 +1,8 @@
 import BibleData from '@/bible/bible-data';
 
 // translations for autocomplete component
-export function getTranslations(selection) {
-  return Object.keys(BibleData.translations).map(function (translationLongNameOrHeaderName, index) {
+export function getTranslations() {
+  return Object.keys(BibleData.translations).map(function (translationLongNameOrHeaderName) {
     var translationShortNameOrHeader = BibleData.translations[translationLongNameOrHeaderName];
     if(translationShortNameOrHeader == 'header') { return { header: translationLongNameOrHeaderName } }
     else { return { text: translationLongNameOrHeaderName, value: translationShortNameOrHeader } }
@@ -11,11 +11,11 @@ export function getTranslations(selection) {
 
 // books for autocomplete component
 export function getBooks(selectedTranslation) {
-  return Object.keys(BibleData.booksNames).filter(function (bookShortNameOrHeaderName, index) {
+  return Object.keys(BibleData.booksNames).filter(function (bookShortNameOrHeaderName) {
     var bookNameOrHeader = BibleData.booksNames[bookShortNameOrHeaderName];
     return (bookNameOrHeader == 'header' || bookShortNameOrHeaderName in BibleData.allBibleData[selectedTranslation]);
   })
-  .map(function (bookShortNameOrHeaderName, index) {
+  .map(function (bookShortNameOrHeaderName) {
     var bookNameOrHeader = BibleData.booksNames[bookShortNameOrHeaderName];
     if(bookNameOrHeader == 'header') { return { header: bookShortNameOrHeaderName } }
     else { return { text: bookNameOrHeader, value: bookShortNameOrHeaderName } }
