@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import About from './views/About.vue'
 import Bible from './views/Bible.vue'
+import FourOhFour from './views/FourOhFour.vue'
 
 Vue.use(Router)
 
@@ -24,6 +25,10 @@ export default new Router({
       path: '/bible',
       name: 'bible',
       component: Bible
+    },
+    {
+      path: '/*',
+      component: FourOhFour
     }
   ]
 })
