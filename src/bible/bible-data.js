@@ -1,22 +1,39 @@
-import bt from '@/bible/content/core/bt';
-import bp from '@/bible/content/core/bp';
-import bw from '@/bible/content/core/bw';
-import br from '@/bible/content/core/br';
-import bg from '@/bible/content/core/bg';
-import ng from '@/bible/content/core/ng';
-import ug from '@/bible/content/core/ug';
-import esp from '@/bible/content/core/esp';
-import ns from '@/bible/content/core/ns';
-import jw from '@/bible/content/core/jw';
-import sz from '@/bible/content/core/sz';
-import eib from '@/bible/content/core/eib';
-import av from '@/bible/content/core/av';
-import web from '@/bible/content/core/web';
-import ylt from '@/bible/content/core/ylt';
+const bt = () => import('@/assets/bible/translations/bt.json');
+const bp = () => import('@/assets/bible/translations/bp.json');
+const bw = () => import('@/assets/bible/translations/bw.json');
+const br = () => import('@/assets/bible/translations/br.json');
+const bg = () => import('@/assets/bible/translations/bg.json');
+const ng = () => import('@/assets/bible/translations/ng.json');
+const ug = () => import('@/assets/bible/translations/ug.json');
+const esp = () => import('@/assets/bible/translations/esp.json');
+const ns = () => import('@/assets/bible/translations/ns.json');
+const jw = () => import('@/assets/bible/translations/jw.json');
+const sz = () => import('@/assets/bible/translations/sz.json');
+const eib = () => import('@/assets/bible/translations/eib.json');
+const av = () => import('@/assets/bible/translations/av.json');
+const web = () => import('@/assets/bible/translations/web.json');
+const ylt = () => import('@/assets/bible/translations/ylt.json');
 
 import headings from '@/bible/content/addons/headings'
 
 var BibleData = {
+  init: function() {
+    bt().then(x => this.allBibleData['bt'] = x);
+    bp().then(x => this.allBibleData['bp'] = x);
+    bw().then(x => this.allBibleData['bw'] = x);
+    br().then(x => this.allBibleData['br'] = x);
+    bg().then(x => this.allBibleData['bg'] = x);
+    ng().then(x => this.allBibleData['ng'] = x);
+    ug().then(x => this.allBibleData['ug'] = x);
+    esp().then(x => this.allBibleData['esp'] = x);
+    ns().then(x => this.allBibleData['ns'] = x);
+    jw().then(x => this.allBibleData['jw'] = x);
+    sz().then(x => this.allBibleData['sz'] = x);
+    eib().then(x => this.allBibleData['eib'] = x);
+    av().then(x => this.allBibleData['av'] = x);
+    web().then(x => this.allBibleData['web'] = x);
+    ylt().then(x => this.allBibleData['ylt'] = x);
+  },
   translations: {
     'Polskie tłumaczenia' : 'header',
     'Biblia Tysiąclecia'            : 'bt',
@@ -53,21 +70,21 @@ var BibleData = {
     //        ...
     //     ]
     //  }
-    'bt': bt,
-    'bp': bp,
-    'bw': bw,
-    'br': br,
-    'bg': bg,
-    'ng': ng,
-    'ug': ug,
-    'esp': esp,
-    'ns': ns,
-    'jw': jw,
-    'sz': sz,
-    'eib': eib,
-    'av': av,
-    'web': web,
-    'ylt': ylt
+    'bt': null,
+    'bp': null,
+    'bw': null,
+    'br': null,
+    'bg': null,
+    'ng': null,
+    'ug': null,
+    'esp': null,
+    'ns': null,
+    'jw': null,
+    'sz': null,
+    'eib': null,
+    'av': null,
+    'web': null,
+    'ylt': null
   },
   booksNames: {
     'Stary Testament' : 'header',

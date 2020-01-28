@@ -13,7 +13,13 @@ export function getTranslations() {
 export function getBooks(selectedTranslation) {
   return Object.keys(BibleData.booksNames).filter(function (bookShortNameOrHeaderName) {
     var bookNameOrHeader = BibleData.booksNames[bookShortNameOrHeaderName];
-    return (bookNameOrHeader == 'header' || bookShortNameOrHeaderName in BibleData.allBibleData[selectedTranslation]);
+    if(bookNameOrHeader == 'header') {
+      return true;
+    }
+    else if(BibleData.allBibleData[selectedTranslation] == null) {
+      return false;
+    }
+    return bookShortNameOrHeaderName in BibleData.allBibleData[selectedTranslation];
   })
   .map(function (bookShortNameOrHeaderName) {
     var bookNameOrHeader = BibleData.booksNames[bookShortNameOrHeaderName];

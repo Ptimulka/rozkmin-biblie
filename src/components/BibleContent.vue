@@ -92,7 +92,11 @@ export default {
       verseNumberSelectable: false,
       previousBibliaInfoRequests: [],
       currentSelection: null,
+      bibleData: BibleData
     }
+  },
+  created() {
+    BibleData.init();
   },
   methods: {
     scrollToChapter(chapterNumber) {
@@ -165,7 +169,9 @@ export default {
       return getBooks(this.selectedTranslation);
     },
     verses() {
-      return BibleData.allBibleData[this.selectedTranslation][this.selectedBook];
+      if(this.bibleData.allBibleData[this.selectedTranslation] == null)
+        return [];
+      return this.bibleData.allBibleData[this.selectedTranslation][this.selectedBook];
     },
     verseNumberClasses() {
       return {
@@ -176,7 +182,7 @@ export default {
       return this.verses.map(chapterVerses => chapterVerses.length );
     },
     headings() {
-      return BibleData.headings[this.selectedBook];
+      return this.bibleData.headings[this.selectedBook];
     }
   }
 }

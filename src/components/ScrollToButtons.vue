@@ -31,15 +31,16 @@ export default {
   props: ['translation', 'book'],
   computed: {
     numberOfChapters() {
-      return BibleData.allBibleData[this.translation][this.book].length;
+      if(BibleData.allBibleData[this.translation] == null)
+          return 0;
+      else
+        return BibleData.allBibleData[this.translation][this.book].length;
     },
     headings() {
-      if(this.book in BibleData.headings) {
+      if(this.book in BibleData.headings)
         return BibleData.headings[this.book];
-      }
-      else {
+      else
         return Array(this.numberOfChapters).fill([]);
-      }
     }
   }
 }
