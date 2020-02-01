@@ -16,7 +16,7 @@ export function getBooks(selectedTranslation) {
     if(bookNameOrHeader == 'header') {
       return true;
     }
-    else if(BibleData.allBibleData[selectedTranslation] == null) {
+    else if(!BibleData.isLoaded(selectedTranslation)) {
       return false;
     }
     return bookShortNameOrHeaderName in BibleData.allBibleData[selectedTranslation];

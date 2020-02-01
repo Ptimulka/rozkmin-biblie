@@ -40,6 +40,15 @@
       </v-card-text>
     </v-card>
 
+    <v-card v-if="isLoading">
+        <v-card-text align="center" justify="center">
+          <v-progress-circular class="my-5" indeterminate color="primary"></v-progress-circular>
+          <h2 class="primary--text my-5">
+            Ładowanie tekstu Biblii
+          </h2>
+      </v-card-text>
+    </v-card>
+
     <v-card v-for="(versesArrays, indexChapter) in verses" class="mb-2" :key="indexChapter">
       <!-- Bible text -->
       <v-card-text class="text-justify" @mouseup="onBibleSelected()">
@@ -96,7 +105,7 @@ export default {
     }
   },
   created() {
-    BibleData.init();
+    this.bibleData.loadTranslation(this.selectedTranslation);
   },
   methods: {
     scrollToChapter(chapterNumber) {
@@ -168,8 +177,11 @@ export default {
     books() {
       return getBooks(this.selectedTranslation);
     },
+    isLoading() {
+      return !this.bibleData.isLoaded(this.selectedTranslation);
+    },
     verses() {
-      if(this.bibleData.allBibleData[this.selectedTranslation] == null)
+      if(!this.bibleData.isLoaded(this.selectedTranslation))
         return [];
       return this.bibleData.allBibleData[this.selectedTranslation][this.selectedBook];
     },
@@ -183,6 +195,11 @@ export default {
     },
     headings() {
       return this.bibleData.headings[this.selectedBook];
+    }
+  },
+  watch: {
+    selectedTranslation(newSelectedTranslation) {
+      this.bibleData.loadTranslation(newSelectedTranslation);
     }
   }
 }

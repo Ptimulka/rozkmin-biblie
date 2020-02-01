@@ -1,38 +1,30 @@
-const bt = () => import('@/assets/bible/translations/bt.json');
-const bp = () => import('@/assets/bible/translations/bp.json');
-const bw = () => import('@/assets/bible/translations/bw.json');
-const br = () => import('@/assets/bible/translations/br.json');
-const bg = () => import('@/assets/bible/translations/bg.json');
-const ng = () => import('@/assets/bible/translations/ng.json');
-const ug = () => import('@/assets/bible/translations/ug.json');
-const esp = () => import('@/assets/bible/translations/esp.json');
-const ns = () => import('@/assets/bible/translations/ns.json');
-const jw = () => import('@/assets/bible/translations/jw.json');
-const sz = () => import('@/assets/bible/translations/sz.json');
-const eib = () => import('@/assets/bible/translations/eib.json');
-const av = () => import('@/assets/bible/translations/av.json');
-const web = () => import('@/assets/bible/translations/web.json');
-const ylt = () => import('@/assets/bible/translations/ylt.json');
-
 import headings from '@/bible/content/addons/headings'
 
 var BibleData = {
-  init: function() {
-    bt().then(x => this.allBibleData['bt'] = x);
-    bp().then(x => this.allBibleData['bp'] = x);
-    bw().then(x => this.allBibleData['bw'] = x);
-    br().then(x => this.allBibleData['br'] = x);
-    bg().then(x => this.allBibleData['bg'] = x);
-    ng().then(x => this.allBibleData['ng'] = x);
-    ug().then(x => this.allBibleData['ug'] = x);
-    esp().then(x => this.allBibleData['esp'] = x);
-    ns().then(x => this.allBibleData['ns'] = x);
-    jw().then(x => this.allBibleData['jw'] = x);
-    sz().then(x => this.allBibleData['sz'] = x);
-    eib().then(x => this.allBibleData['eib'] = x);
-    av().then(x => this.allBibleData['av'] = x);
-    web().then(x => this.allBibleData['web'] = x);
-    ylt().then(x => this.allBibleData['ylt'] = x);
+  imports: {
+    bt: () => import('@/assets/bible/translations/bt.json'),
+    bp: () => import('@/assets/bible/translations/bp.json'),
+    bw: () => import('@/assets/bible/translations/bw.json'),
+    br: () => import('@/assets/bible/translations/br.json'),
+    bg: () => import('@/assets/bible/translations/bg.json'),
+    ng: () => import('@/assets/bible/translations/ng.json'),
+    ug: () => import('@/assets/bible/translations/ug.json'),
+    esp: () => import('@/assets/bible/translations/esp.json'),
+    ns: () => import('@/assets/bible/translations/ns.json'),
+    jw: () => import('@/assets/bible/translations/jw.json'),
+    sz: () => import('@/assets/bible/translations/sz.json'),
+    eib: () => import('@/assets/bible/translations/eib.json'),
+    av: () => import('@/assets/bible/translations/av.json'),
+    web: () => import('@/assets/bible/translations/web.json'),
+    ylt: () => import('@/assets/bible/translations/ylt.json'),
+  },
+  loadTranslation: function(translation) {
+    if(!this.isLoaded(translation)) {
+      if(translation in this.imports) {
+        let transl = translation;
+        this.imports[translation]().then(x => this.allBibleData[transl] = x);
+      }
+    }
   },
   translations: {
     'Polskie tłumaczenia' : 'header',
@@ -85,6 +77,9 @@ var BibleData = {
     'av': null,
     'web': null,
     'ylt': null
+  },
+  isLoaded: function(translation) {
+    return this.allBibleData[translation] != null;
   },
   booksNames: {
     'Stary Testament' : 'header',
