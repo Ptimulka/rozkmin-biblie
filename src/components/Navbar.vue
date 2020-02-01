@@ -73,7 +73,7 @@ export default {
         return ""
       }
       else {
-        return "app-bar-photo.jpeg"
+        return "app-bar-photo-thin.jpg"
       }
     }
   },

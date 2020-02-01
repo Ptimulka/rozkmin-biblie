@@ -3,7 +3,7 @@
     <Navbar bar-transparent hide-bar-on-scroll></Navbar>
     <v-content class="pt-0">
 
-      <v-parallax src="app-bar-photo-dark.jpg" height="700">
+      <v-parallax src="app-bar-photo-dark-smaller.jpg" height="700">
         <v-row align="center" justify="center">
           <v-col class="text-center white--text" cols="12">
             <img src="black_open_book.png" height="200" class="mb-10">
